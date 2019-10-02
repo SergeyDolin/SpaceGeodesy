@@ -28,7 +28,7 @@ dist2 = np.linalg.norm(Sat2-GroundItem)
 dist3 = np.linalg.norm(Sat3-GroundItem)
 dist4 = np.linalg.norm(Sat4-GroundItem)
 #Дано:
-rho_measured = np.array([dist1,dist2,dist3,dist4]) + cdt + V #измеренные (псевдо)дальности 
+rho_measured = np.array([dist1,dist2,dist3,dist4])  + V #измеренные (псевдо)дальности 
 groundItemApprox = GroundItem + GroundItemInitialError #приближенные координаты станции
 #и Sat1, Sat2, Sat3, Sat4 (Координаты спутников)
 
@@ -37,36 +37,52 @@ groundItemApprox = GroundItem + GroundItemInitialError #приближенные
 #_____________________________
 
 
-
 #Определене единичных векторов топоцентрического направления на спутник
 u1 = (Sat1-groundItemApprox) / np.linalg.norm(Sat1-groundItemApprox)
 u2 = (Sat2-groundItemApprox) / np.linalg.norm(Sat2-groundItemApprox)
 u3 = (Sat3-groundItemApprox) / np.linalg.norm(Sat3-groundItemApprox)
 u4 = (Sat4-groundItemApprox) / np.linalg.norm(Sat4-groundItemApprox)
 A1 = np.vstack((u1,u2,u3,u4))
-#A = np.hstack((A1,E))
-print(A1)
-#Xg = np.hstack((groundItemApprox, np.array([ cdt])))
+A = np.hstack((A1,E))
 
-f_ =  np.dot(A1, groundItemApprox)
-X_new = np.dot(np.linalg.pinv(A1), f_)
-print(X_new)
+f_1 =  -rho_measured[0] + np.dot(u1.transpose(), (Sat1))
+f_2 =  -rho_measured[1] + np.dot(u2.transpose(), (Sat2))
+f_3 =  -rho_measured[2] + np.dot(u3.transpose(), (Sat3))
+f_4 =  -rho_measured[3] + np.dot(u4.transpose(), (Sat4))
 
-deltaX = groundItemApprox - X_new
-print(deltaX)
-u1_1 = (Sat1-deltaX) / np.linalg.norm(Sat1-deltaX)
-u2_2 = (Sat2-deltaX) / np.linalg.norm(Sat2-deltaX)
-u3_3 = (Sat3-deltaX) / np.linalg.norm(Sat3-deltaX)
-u4_4 = (Sat4-deltaX) / np.linalg.norm(Sat4-deltaX)
+f_ = np.array([f_1,f_2,f_3,f_4])
+
+X_new = np.dot(np.linalg.pinv(A), f_)
+print("X estimated", X_new)
+Xest = np.array([f_[0],f_[1],f_[2]])
+
+delta = Xest - groundItemApprox
+groundItemApprox_1 = groundItemApprox + delta
+print(delta)
+u1_1 = (Sat1-groundItemApprox_1) / np.linalg.norm(Sat1-groundItemApprox_1)
+u2_2 = (Sat2-groundItemApprox_1) / np.linalg.norm(Sat2-groundItemApprox_1)
+u3_3 = (Sat3-groundItemApprox_1) / np.linalg.norm(Sat3-groundItemApprox_1)
+u4_4 = (Sat4-groundItemApprox_1) / np.linalg.norm(Sat4-groundItemApprox_1)
 A1_1 = np.vstack((u1_1,u2_2,u3_3,u4_4))
-#A = np.hstack((A1,E))
-print(A1_1)
-#Xg1 = np.hstack((groundItemApprox, np.array([ cdt])))
+A2 = np.hstack((A1_1,E))
 
-F =  np.dot(A1_1, X_new)
-X_new1 = np.dot(np.linalg.pinv(A1_1), F)
+f_11 =  -rho_measured[0] + np.dot(u1_1.transpose(), (Sat1))
+f_22 =  -rho_measured[1] + np.dot(u2_2.transpose(), (Sat2))
+f_33 =  -rho_measured[2] + np.dot(u3_3.transpose(), (Sat3))
+f_44 =  -rho_measured[3] + np.dot(u4_4.transpose(), (Sat4))
+
+f_n = np.array([f_11,f_22,f_33,f_44])
+
+X_new1 = np.dot(np.linalg.pinv(A2), f_n)
 print(X_new1)
 
+Xest1 = np.array([f_n[0],f_n[1],f_n[2]])
+delta1 = Xest1 - groundItemApprox_1
+groundItemApprox_2 = groundItemApprox_1 + delta1
+print(groundItemApprox_2)
+
+
+#print(GroundItem - X_new1)
 
 
 #deltaX = X_new-X
@@ -75,4 +91,3 @@ print(X_new1)
 #X_new1 = np.dot(np.linalg.pinv(A), F)
 #print(X_new1)
 #V_new = (np.dot(A,X_new)) - F
-
