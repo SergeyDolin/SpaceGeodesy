@@ -21,7 +21,10 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="newton.py">
+    <Compile Include="Iteration.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SpaceGeodesy.py" />
