@@ -7,6 +7,7 @@ Sat1 = np.array([1000, 1500,11])
 Sat2 = np.array([2000, 1500,10])
 Sat3 = np.array([1000, 500,17])
 Sat4 = np.array([2000, 500,100])
+Satellites = np.array([Sat1, Sat2, Sat3, Sat4])
 cdt =  0.9999999997
 GroundItem = np.array([1550, 680, 5])
 X = np.hstack((GroundItem, np.array([ cdt])))
