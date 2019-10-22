@@ -8,8 +8,8 @@ from Iteration import*
 #Дано:
 rho_measured = np.array([dist1,dist2,dist3,dist4,dist5]) + V #измеренные (псевдо)дальности 
 groundItemApprox = GroundItem + GroundItemInitialError #приближенные координаты станции
-#и Sat1, Sat2, Sat3, Sat4 (Координаты спутников)
-sigma = np.array([0.5, 0.5, 0.5])
+#и Координаты спутников
+
 #_____________________________
 #Решение
 #_____________________________
@@ -17,12 +17,12 @@ sigma = np.array([0.5, 0.5, 0.5])
 x = Iterations(rho_measured, groundItemApprox)
 Delta = x - groundItemApprox
 print(x)
-while Delta.all() > 0.001:
+while Delta.all() > 0.1:
     x1 = Iterations(rho_measured, x)
     Delta = x1 - x
     print(x1)
     x = Iterations(rho_measured, x1)
-
+#print(Cov)
 
 
 

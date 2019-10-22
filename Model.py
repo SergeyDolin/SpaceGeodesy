@@ -7,19 +7,14 @@ Sat1 = np.array([1000, 1500,11])
 Sat2 = np.array([2000, 1500,10])
 Sat3 = np.array([1000, 500,17])
 Sat4 = np.array([2000, 500,100])
-Sat5 = np.array([2020, 400,100])
+Sat5 = np.array([1520, 1400,80])
 Satellites = np.array([Sat1, Sat2, Sat3, Sat4, Sat5])
 cdt =  0.9999999997
 GroundItem = np.array([1550, 680, 5])
 X = np.hstack((GroundItem, np.array([ cdt])))
 V = np.random.normal(0, 0.1, 5)
 E = np.ones((5,1))
-sigma = np.array([0.5, 0.5, 0.5])
-
-# Априорная дисперсия единицы веса
-sigma_sq = 0.00001
-Cov = np.cov(V)
-P = np.dot(sigma_sq, Cov)
+Squared_RMS = np.array([0.5, 0.64, 0.1, 0.247, 0.98]) 
 
 GroundItemInitialError = np.random.normal(0, 10, 3)
 
